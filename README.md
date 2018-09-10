@@ -16,9 +16,9 @@ Example config.json:
 }
 ```
 
-This accessory will create a occupancy sensor linked with a Bluetooth device.
+This accessory will create a motion sensor linked with a Bluetooth device.
 
-When the device is found, the occupancy sensor is triggered. When the device is not seen for longer than `gracePeriod`, the occupancy sensor is turned off.
+When the device is found, the motion sensor is triggered. When the device is not seen for longer than `gracePeriod`, the motion sensor will stop detecting movement.
 
 ## Configuration options  
   

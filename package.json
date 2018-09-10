@@ -21,6 +21,7 @@
     "homebridge": ">=0.4.0"
   },
   "dependencies": {
+    "fakegato-history": "^0.5.2",
     "hap-nodejs": "^0.4.28",
     "noble": "^1.9.1"
   },

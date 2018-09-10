@@ -1,10 +1,13 @@
 const noble = require('noble');
+const fakegato = require('fakegato-history');
 
 const identify = require('./identify');
+const pkginfo = require('./package');
 
 let Characteristic;
 let Service;
 
+let FakeGatoHistoryService;
 const RSSI_THRESHOLD = -90;
 
 class AutomationBluetoothPresence {
@@ -76,20 +79,39 @@ class AutomationBluetoothPresence {
   }
 
   setPresence(present) {
+    if (this.deviceFound !== present) {
+      this.loggingService.addEntry({ time: new Date().getTime(), status: present ? 1 : 0 });
+    }
+
     this.deviceFound = present;
-    this.occupancySensor
-      .getCharacteristic(Characteristic.OccupancyDetected)
+
+    this.motionSensor
+      .getCharacteristic(Characteristic.MotionDetected)
       .updateValue(present);
   }
 
   createServices() {
-    this.occupancySensor = new Service.OccupancySensor(this.name);
-    this.occupancySensor
-      .getCharacteristic(Characteristic.OccupancyDetected)
+    this.motionSensor = new Service.MotionSensor(this.name);
+    this.motionSensor
+      .getCharacteristic(Characteristic.MotionDetected)
       .on('get', callback => callback(null, this.deviceFound));
+    this.motionSensor.log = this.log;
+
+    const accessoryInformationService = new Service.AccessoryInformation();
+    accessoryInformationService
+      .setCharacteristic(Characteristic.Name, this.name)
+      .setCharacteristic(Characteristic.Manufacturer, pkginfo.author.name || pkginfo.author)
+      .setCharacteristic(Characteristic.Model, pkginfo.name)
+      .setCharacteristic(Characteristic.SerialNumber, this.deviceId)
+      .setCharacteristic(Characteristic.FirmwareRevision, pkginfo.version)
+      .setCharacteristic(Characteristic.HardwareRevision, pkginfo.version);
+
+    this.loggingService = new FakeGatoHistoryService('motion', this.motionSensor, { storage: 'fs' });
 
     return [
-      this.occupancySensor,
+      this.motionSensor,
+      accessoryInformationService,
+      this.loggingService,
     ];
   }
 
@@ -113,5 +135,6 @@ module.exports = (homebridge) => {
   Service = homebridge.hap.Service; // eslint-disable-line
   Characteristic = homebridge.hap.Characteristic; // eslint-disable-line
 
+  FakeGatoHistoryService = fakegato(homebridge);
   homebridge.registerAccessory('homebridge-automation-bluetooth-presence', 'AutomationBluetoothPresence', AutomationBluetoothPresence);
 };
