@@ -1,0 +1,36 @@
+{
+  "name": "homebridge-automation-bluetooth-presence",
+  "version": "0.0.1",
+  "description": "Manage people presence based on Bluetooth devices (phones, watches, tables, bluetooth keychain tags)",
+  "license": "ISC",
+  "keywords": [
+    "homebridge-plugin"
+  ],
+  "author": {
+    "name": "Paolo Tremadio"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paolotremadio/homebridge-automation-bluetooth-presence.git"
+  },
+  "bugs": {
+    "url": "http://github.com/paolotremadio/homebridge-automation-bluetooth-presence/issues"
+  },
+  "engines": {
+    "node": ">=8.0.0",
+    "homebridge": ">=0.4.0"
+  },
+  "dependencies": {
+    "hap-nodejs": "^0.4.28",
+    "noble": "^1.9.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.16.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  },
+  "scripts": {
+    "lint": "./node_modules/eslint/bin/eslint.js . --ext .js",
+    "detect-devices": "node detect.js"
+  }
+}
