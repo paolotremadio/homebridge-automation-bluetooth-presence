@@ -1,11 +1,12 @@
 const noble = require('noble');
-const fakegato = require('fakegato-history');
+const fakegatoHistory = require('fakegato-history');
 
 const identify = require('./identify');
 const pkginfo = require('./package');
 
 let Characteristic;
 let Service;
+let storagePath;
 
 let FakeGatoHistoryService;
 const RSSI_THRESHOLD = -90;
@@ -106,7 +107,15 @@ class AutomationBluetoothPresence {
       .setCharacteristic(Characteristic.FirmwareRevision, pkginfo.version)
       .setCharacteristic(Characteristic.HardwareRevision, pkginfo.version);
 
-    this.loggingService = new FakeGatoHistoryService('motion', this.motionSensor, { storage: 'fs' });
+    this.loggingService = new FakeGatoHistoryService(
+      'motion',
+      this.motionSensor,
+      {
+        storage: 'fs',
+        path: `${storagePath}/accessories`,
+        filename: `history_bp_${this.deviceId}.json`,
+      },
+    );
 
     return [
       this.motionSensor,
@@ -134,7 +143,8 @@ class AutomationBluetoothPresence {
 module.exports = (homebridge) => {
   Service = homebridge.hap.Service; // eslint-disable-line
   Characteristic = homebridge.hap.Characteristic; // eslint-disable-line
+  storagePath = homebridge.user.storagePath(); // eslint-disable-line
 
-  FakeGatoHistoryService = fakegato(homebridge);
+  FakeGatoHistoryService = fakegatoHistory(homebridge);
   homebridge.registerAccessory('homebridge-automation-bluetooth-presence', 'AutomationBluetoothPresence', AutomationBluetoothPresence);
 };
