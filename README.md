@@ -20,6 +20,8 @@ This accessory will create a motion sensor linked with a Bluetooth device.
 
 When the device is found, the motion sensor is triggered. When the device is not seen for longer than `gracePeriod`, the motion sensor will stop detecting movement.
 
+The plugin will show the history history in the Elgato's [Eve](https://www.elgato.com/en/eve/eve-app) app. 
+
 ## Configuration options  
   
 | Attribute | Required | Usage | Example |
@@ -29,7 +31,14 @@ When the device is found, the motion sensor is triggered. When the device is not
 | gracePeriod | No (default: `600`) | The number of seconds to wait for announcements before considering the device gone. 10 minutes (600 seconds) is recommended. | `600` (seconds, equal to 10 mintues) |
 
 ## Find the device ID
-Run `npm run detect-devices` and wait. A list of devices will appear on screen. Grab the device ID from the list and add it to the config.  
+### Method 1 - Clone the repo
+1. Clone this repo
+2. Run `npm install` or `yarn install` in the folder you've cloned the repo
+3. Run `npm run detect-devices`. A list of devices will appear on screen. Grab the device ID from the list and add it to the config.
+
+### Method 2 - Install the plugin globally
+1. Run `npm install homebridge-automation-bluetooth-presence -g`
+2. Run `automation-bt-detect-devices`. A list of devices will appear on screen. Grab the device ID from the list and add it to the config.
 
 ## Devices that can be monitored
 You can track:

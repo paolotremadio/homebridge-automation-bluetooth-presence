@@ -30,6 +30,9 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0"
   },
+  "bin": {
+    "automation-bt-detect-devices": "bin/automation-bt-detect-devices"
+  },
   "scripts": {
     "lint": "./node_modules/eslint/bin/eslint.js . --ext .js",
     "detect-devices": "node detect.js"
