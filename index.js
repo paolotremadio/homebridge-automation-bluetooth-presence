@@ -1,4 +1,5 @@
 const noble = require('noble');
+const debug = require('debug');
 const fakegatoHistory = require('fakegato-history');
 
 const identify = require('./identify');
@@ -15,6 +16,7 @@ class AutomationBluetoothPresence {
   constructor(log, config) {
     this.log = log;
     this.name = config.name;
+    this.debug = debug(`homebridge-automation-bluetooth-presence-${this.name}`);
 
     this.deviceId = config.deviceId;
     const configGracePeriod = config.gracePeriod || 10 * 60; // 10 minutes;
@@ -22,6 +24,7 @@ class AutomationBluetoothPresence {
 
     this.device = false;
     this.deviceFound = false;
+    this.rescanTimeout = null;
 
     this.services = this.createServices();
 
@@ -32,7 +35,7 @@ class AutomationBluetoothPresence {
     noble.on('stateChange', (state) => {
       if (state === 'poweredOn') {
         this.log('Looking for Bluetooth devices');
-        noble.startScanning([], true);
+        noble.startScanning([], false);
       } else {
         noble.stopScanning();
       }
@@ -65,6 +68,21 @@ class AutomationBluetoothPresence {
 
     this.setPresence(true);
     this.device.lastSeen = Date.now();
+    this.debug(`Device seen - Entered: ${entered} - Last seen: ${new Date()}`);
+
+    this.startRescanTimer();
+  }
+
+  startRescanTimer() {
+    if (this.rescanTimeout) {
+      clearTimeout(this.rescanTimeout);
+    }
+
+    this.rescanTimeout = setTimeout(() => {
+      this.debug('Restart scanning');
+      noble.stopScanning();
+      noble.startScanning([], false);
+    }, 60 * 1000);
   }
 
   deviceTimer() {
