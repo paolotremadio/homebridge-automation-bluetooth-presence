@@ -1,6 +1,6 @@
 {
   "name": "homebridge-automation-bluetooth-presence",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Manage people presence based on Bluetooth devices (phones, watches, tables, bluetooth keychain tags)",
   "license": "ISC",
   "keywords": [
