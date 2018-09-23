@@ -10,7 +10,6 @@ let Service;
 let storagePath;
 
 let FakeGatoHistoryService;
-const RSSI_THRESHOLD = -90;
 
 class AutomationBluetoothPresence {
   constructor(log, config) {
@@ -46,14 +45,10 @@ class AutomationBluetoothPresence {
   }
 
   deviceDiscovered(peripheral) {
-    if (peripheral.rssi < RSSI_THRESHOLD) {
-      // ignore, device is out of range
-      return;
-    }
-
-    const { id } = peripheral;
-    if (id !== this.deviceId) {
+    const { id, address } = peripheral;
+    if (id !== this.deviceId && address !== this.deviceId) {
       // ignore, not the right device
+      this.debug(`Device ignored, wrong ID (looking for ${this.deviceId}) - ID: ${id} - Address: ${address} - Name: ${peripheral.advertisement.localName}`);
       return;
     }
 

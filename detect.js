@@ -18,5 +18,6 @@ noble.on('stateChange', (state) => {
 });
 
 noble.on('discover', (peripheral) => {
-  console.log(`[${new Date()}] ID: ${peripheral.id}\tSignal: ${formatRSSI(peripheral.rssi)}%\tName: ${peripheral.advertisement.localName}`);
+  const id = process.platform === 'darwin' ? peripheral.id : peripheral.address;
+  console.log(`[${new Date()}] ID: ${id}\tSignal: ${formatRSSI(peripheral.rssi)}%\tName: ${peripheral.advertisement.localName}`);
 });
