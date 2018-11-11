@@ -22,6 +22,9 @@ When the device is found, the motion sensor is triggered. When the device is not
 
 The plugin will show the history history in the Elgato's [Eve](https://www.elgato.com/en/eve/eve-app) app. 
 
+## Installation
+Before installing this library, make sure you have met all the system dependencies. See the [Noble documentation](https://github.com/noble/noble#prerequisites). This plugin won't work unless all the system dependencies have been met.
+
 ## Configuration options  
   
 | Attribute | Required | Usage | Example |
