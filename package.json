@@ -24,7 +24,8 @@
     "debug": "^4.0.1",
     "fakegato-history": "^0.5.2",
     "hap-nodejs": "^0.4.28",
-    "noble": "^1.9.1"
+    "noble": "^1.9.1",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "eslint": "^4.16.0",
@@ -36,6 +37,9 @@
   },
   "scripts": {
     "lint": "./node_modules/eslint/bin/eslint.js . --ext .js",
-    "detect-devices": "node detect.js"
-  }
+    "detect-devices": "node detect.js",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
